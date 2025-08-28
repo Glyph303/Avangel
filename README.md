@@ -1,2 +1,6 @@
-"# Avangel" 
+
 Avangelion Project 
+
+PULL BEFORE COMMIT
+CHANGES MADE
+UPDATE THIS EVERY TIME YOU DO IT
