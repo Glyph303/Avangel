@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacks Blackjack Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f4c75 0%, #3282b8 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .player-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .player-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .score-display {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #bbe1fa;
+        }
+
+        .game-controls {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .controls-section {
+            margin: 15px 0;
+        }
+
+        .controls-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            color: #bbe1fa;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #56ab2f, #a8e6cf);
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
+
+        .status-display {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blockchain-section {
+            grid-column: 1 / -1;
+        }
+
+        .wallet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .game-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .cards-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .game-board {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .score-value {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            opacity: 0.7;
+        }
+
+        .highlight {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .debug-info {
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🃏 Stacks Blackjack</h1>
+            <p>Blockchain-powered Blackjack with STX stakes</p>
+        </div>
+
+        <!-- Game Board -->
+        <div class="game-board">
+            <!-- Player 1 Section -->
+            <div class="player-section">
+                <h2>🎮 Player 1</h2>
+                <div class="score-display">
+                    <div>
+                        <div class="score-label">Score</div>
+                        <div class="score-value" id="current--0">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Player 2 Section -->
+            <div class="player-section">
+                <h2>🎯 Player 2</h2>
+                <div class="score-display">
+                    <div>
+                        <div class="score-label">Score</div>
+                        <div class="score-value" id="current--1">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blockchain Section -->
+            <div class="player-section blockchain-section">
+                <div class="controls-section">
+                    <h3>💰 Wallet Connection</h3>
+                    <div class="wallet-grid">
+                        <button id="connect-wallet-1" class="btn btn-primary">Connect Player 1 Wallet</button>
+                        <button id="connect-wallet-2" class="btn btn-primary">Connect Player 2 Wallet</button>
+                    </div>
+                </div>
+
+                <div class="controls-section">
+                    <h3>🎲 Game Setup</h3>
+                    <div class="wallet-grid">
+                        <button id="create-game" class="btn btn-success" disabled>Create Game & Stake 1 STX</button>
+                        <button id="join-game" class="btn btn-success" disabled>Join Game & Stake 1 STX</button>
+                    </div>
+                </div>
+
+                <div class="status-display" id="game-status">
+                    Install a Stacks wallet (Xverse, Leather, or Hiro) to start playing
+                </div>
+
+                <div class="debug-info" id="debug-info">
+                    Debug info will appear here...
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="game-controls blockchain-section">
+                <h3>🎮 Game Controls</h3>
+                
+                <div class="game-actions">
+                    <button class="btn btn-warning btn--deal">🔄 Deal New Hand</button>
+                    <button class="btn btn--hit">👆 Hit</button>
+                    <button class="btn btn--stand">✋ Stand</button>
+                </div>
+
+                <div class="cards-info">
+                    <button class="btn btn--limit">📊 Cards Left: 20</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Built on Stacks Blockchain • Powered by Clarity Smart Contracts</p>
+            <p>⚠ Testnet Only - For Hackathon Demo</p>
+            <p>📱 Install <a href="https://www.xverse.app/" target="_blank">Xverse</a> or <a href="https://leather.io/" target="_blank">Leather</a> wallet to play</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+"use strict";
+
+// -------------------- GAME STATE -------------------- //
+const deckSize = 20;
+let deck = []; // shuffled deck
+let currentPlayer = 0; // 0 = player1, 1 = player2
+let scores = [[], []]; // store drawn card values for each player
+let hasStood = [false, false]; // track if players stood
+let gameOver = false;
+let currentGameId = null;
+
+// Stacks connection - UPDATE THIS WITH YOUR DEPLOYED CONTRACT ADDRESS
+let stxAddress1 = null;
+let stxAddress2 = null;
+const CONTRACT_ADDRESS = "ST35D0W583GEAV1T1PDVF5R3SYXVC3KC1FJZPQSVG"; // Your deployer address
+const CONTRACT_NAME = "bj_escrow_v2";
+const NETWORK = "testnet";
+
+// DOM elements
+const btnDeal = document.querySelector(".btn--deal");
+const btnHit = document.querySelector(".btn--hit");
+const btnStand = document.querySelector(".btn--stand");
+const btnLimit = document.querySelector(".btn--limit");
+
+const scoreEl0 = document.getElementById("current--0");
+const scoreEl1 = document.getElementById("current--1");
+
+// Get the new buttons
+const connectWallet1Btn = document.getElementById("connect-wallet-1");
+const connectWallet2Btn = document.getElementById("connect-wallet-2");
+const createGameBtn = document.getElementById("create-game");
+const joinGameBtn = document.getElementById("join-game");
+const gameStatusDiv = document.getElementById("game-status");
+const debugInfoDiv = document.getElementById("debug-info");
+
+// -------------------- STACKS WALLET INTEGRATION -------------------- //
+
+// Debug logging function
+function debugLog(message) {
+    console.log(message);
+    debugInfoDiv.textContent += new Date().toLocaleTimeString() + ": " + message + "\n";
+    debugInfoDiv.scrollTop = debugInfoDiv.scrollHeight;
+}
+
+// Check if any Stacks wallet is installed
+function checkWalletInstallation() {
+    const wallets = [];
+    
+    if (typeof window.StacksProvider !== 'undefined') {
+        wallets.push('Hiro Wallet');
+    }
+    if (typeof window.LeatherProvider !== 'undefined') {
+        wallets.push('Leather Wallet');
+    }
+    if (typeof window.XverseProviders !== 'undefined') {
+        wallets.push('Xverse Wallet');
+    }
+    
+    debugLog(`Found wallets: ${wallets.join(', ') || 'None'}`);
+    
+    return wallets.length > 0;
+}
+
+// Get available wallet provider
+function getWalletProvider() {
+    if (typeof window.StacksProvider !== 'undefined') {
+        debugLog("Using Hiro Wallet provider");
+        return window.StacksProvider;
+    }
+    if (typeof window.LeatherProvider !== 'undefined') {
+        debugLog("Using Leather Wallet provider");
+        return window.LeatherProvider;
+    }
+    if (typeof window.XverseProviders !== 'undefined') {
+        debugLog("Using Xverse Wallet provider");
+        return window.XverseProviders.StacksProvider;
+    }
+    return null;
+}
+
+// Update game status display
+function updateGameStatus(message) {
+    gameStatusDiv.textContent = message;
+    debugLog("Status: " + message);
+}
+
+// Connect wallet for player 1
+async function connectWallet1() {
+    try {
+        debugLog("Attempting to connect Player 1 wallet...");
+        
+        if (!checkWalletInstallation()) {
+            alert('Please install a Stacks wallet (Xverse, Leather, or Hiro) to play!');
+            return;
+        }
+
+        const provider = getWalletProvider();
+        if (!provider) {
+            alert('No compatible wallet provider found!');
+            return;
+        }
+
+        // Request wallet connection
+        const response = await provider.request('getAddresses', {});
+        debugLog("Wallet response received: " + JSON.stringify(response));
+
+        if (response && response.result) {
+            let address = null;
+            
+            // Handle different response formats
+            if (response.result.addresses) {
+                // Leather/Hiro format - check both 'type' and 'symbol' fields
+                const stxAddr = response.result.addresses.find(addr => 
+                    addr.type === 'stx' || addr.symbol === 'STX'
+                );
+                address = stxAddr ? stxAddr.address : null;
+            } else if (typeof response.result === 'string') {
+                // Some wallets return address directly
+                address = response.result;
+            } else if (response.result.address) {
+                // Alternative format
+                address = response.result.address;
+            }
+
+            if (address) {
+                // Check if this address is already used by player 2
+                if (address === stxAddress2) {
+                    alert("This wallet is already connected as Player 2. Please use a different wallet.");
+                    return;
+                }
+                
+                stxAddress1 = address;
+                connectWallet1Btn.textContent = `Player 1: ${address.slice(0, 8)}...`;
+                connectWallet1Btn.style.background = "linear-gradient(45deg, #28a745, #20c997)";
+                debugLog("Player 1 connected: " + address);
+                checkBothWalletsConnected();
+            } else {
+                debugLog("No STX address found in response");
+                alert("Could not get STX address from wallet");
+            }
+        } else {
+            debugLog("Invalid response from wallet");
+            alert("Invalid response from wallet");
+        }
+    } catch (error) {
+        debugLog("Wallet connection error: " + error.message);
+        console.error("Failed to connect Player 1 wallet:", error);
+        
+        // Handle specific error types
+        if (error.message.includes('User rejected')) {
+            alert("Connection cancelled by user");
+        } else if (error.message.includes('No wallet')) {
+            alert("No wallet found. Please install a Stacks wallet.");
+        } else {
+            alert("Failed to connect wallet: " + error.message);
+        }
+    }
+}
+
+// Connect wallet for player 2  
+async function connectWallet2() {
+    try {
+        debugLog("Attempting to connect Player 2 wallet...");
+        
+        if (!checkWalletInstallation()) {
+            alert('Please install a Stacks wallet (Xverse, Leather, or Hiro) to play!');
+            return;
+        }
+
+        const provider = getWalletProvider();
+        if (!provider) {
+            alert('No compatible wallet provider found!');
+            return;
+        }
+
+        const response = await provider.request('getAddresses', {});
+        debugLog("Wallet response received: " + JSON.stringify(response));
+
+        if (response && response.result) {
+            let address = null;
+            
+            // Handle different response formats (consistent with player 1)
+            if (response.result.addresses) {
+                // Leather/Hiro format - check both 'type' and 'symbol' fields
+                const stxAddr = response.result.addresses.find(addr => 
+                    addr.type === 'stx' || addr.symbol === 'STX'
+                );
+                address = stxAddr ? stxAddr.address : null;
+            } else if (typeof response.result === 'string') {
+                // Some wallets return address directly
+                address = response.result;
+            } else if (response.result.address) {
+                // Alternative format
+                address = response.result.address;
+            }
+
+            if (address) {
+                // Check if this address is already used by player 1
+                if (address === stxAddress1) {
+                    alert("This wallet is already connected as Player 1. Please use a different wallet.");
+                    return;
+                }
+                
+                stxAddress2 = address;
+                connectWallet2Btn.textContent = `Player 2: ${address.slice(0, 8)}...`;
+                connectWallet2Btn.style.background = "linear-gradient(45deg, #28a745, #20c997)";
+                debugLog("Player 2 connected: " + address);
+                checkBothWalletsConnected();
+            } else {
+                debugLog("No STX address found in response");
+                alert("Could not get STX address from wallet");
+            }
+        } else {
+            debugLog("Invalid response from wallet");
+            alert("Invalid response from wallet");
+        }
+    } catch (error) {
+        debugLog("Wallet connection error: " + error.message);
+        console.error("Failed to connect Player 2 wallet:", error);
+        
+        // Handle specific error types
+        if (error.message.includes('User rejected')) {
+            alert("Connection cancelled by user");
+        } else if (error.message.includes('No wallet')) {
+            alert("No wallet found. Please install a Stacks wallet.");
+        } else {
+            alert("Failed to connect wallet: " + error.message);
+        }
+    }
+}
+
+// Check if both wallets are connected
+function checkBothWalletsConnected() {
+    if (stxAddress1 && stxAddress2) {
+        createGameBtn.disabled = false;
+        joinGameBtn.disabled = false;
+        updateGameStatus("Both wallets connected! Ready to create/join game.");
+    }
+}
+
+// Create game and stake STX
+async function createGame() {
+    if (!stxAddress1 || !stxAddress2) {
+        alert("Both players must connect wallets first!");
+        return;
+    }
+    
+    updateGameStatus("Creating game and staking 1 STX...");
+    debugLog("Starting game creation...");
+    
+    try {
+        const provider = getWalletProvider();
+        if (!provider) {
+            throw new Error("No wallet provider available");
+        }
+
+        debugLog("Wallet provider available: " + (typeof provider));
+        debugLog("Available methods: " + Object.keys(provider).join(", "));
+
+        // Try multiple transaction formats for different wallet versions
+        let txOptions1 = {
+            contract: `${CONTRACT_ADDRESS}.${CONTRACT_NAME}`,
+            functionName: "create-game",
+            functionArgs: [stxAddress2],
+            postConditions: [],
+            postConditionMode: "allow"
+        };
+
+        let txOptions2 = {
+            contractAddress: CONTRACT_ADDRESS,
+            contractName: CONTRACT_NAME,
+            functionName: "create-game",
+            functionArgs: [stxAddress2],
+            network: NETWORK,
+            anchorMode: 'any'
+        };
+
+        debugLog("Trying new format first...");
+        debugLog("Transaction options (new): " + JSON.stringify(txOptions1));
+
+        let result;
+        try {
+            // Try new format first
+            result = await provider.request('stx_callContract', txOptions1);
+            debugLog("New format result: " + JSON.stringify(result));
+        } catch (newFormatError) {
+            debugLog("New format failed: " + (newFormatError.message || newFormatError));
+            debugLog("Trying old format...");
+            debugLog("Transaction options (old): " + JSON.stringify(txOptions2));
+            
+            try {
+                // Fall back to old format
+                result = await provider.request('stx_callContract', txOptions2);
+                debugLog("Old format result: " + JSON.stringify(result));
+            } catch (oldFormatError) {
+                debugLog("Old format failed: " + (oldFormatError.message || oldFormatError));
+                throw new Error(`Both formats failed. New: ${newFormatError.message || 'undefined'}. Old: ${oldFormatError.message || 'undefined'}`);
+            }
+        }
+
+        if (result === undefined) {
+            throw new Error("Provider returned undefined - check wallet connection and try again");
+        }
+
+        debugLog("Final transaction result: " + JSON.stringify(result));
+
+        // Handle different response formats
+        let txId = null;
+        if (result && result.result) {
+            txId = result.result.txid || result.result.txId;
+        } else if (result && result.txId) {
+            txId = result.txId;
+        } else if (result && result.txid) {
+            txId = result.txid;
+        }
+
+        if (txId) {
+            currentGameId = Date.now() + Math.floor(Math.random() * 1000);
+            updateGameStatus(`Game created! TX: ${txId.slice(0, 8)}... Player 2 can now join.`);
+            createGameBtn.disabled = true;
+            createGameBtn.textContent = "✅ Game Created";
+            
+            alert(`Game created successfully!\nTransaction ID: ${txId}\n\nPlayer 2 can now click "Join Game"`);
+        } else {
+            debugLog("No txId found in result: " + JSON.stringify(result));
+            throw new Error("Transaction may have been submitted but no txId returned. Check wallet for pending transactions.");
+        }
+        
+    } catch (error) {
+        debugLog("Create game error: " + (error.message || error || 'Unknown error'));
+        console.error("Failed to create game:", error);
+        updateGameStatus("Failed to create game. Check debug info for details.");
+        
+        // More specific error handling
+        const errorMsg = error.message || error || 'Unknown error';
+        if (errorMsg.includes('User rejected') || errorMsg.includes('cancelled')) {
+            alert("Transaction cancelled by user");
+        } else if (errorMsg.includes('Insufficient funds') || errorMsg.includes('balance')) {
+            alert("Insufficient STX balance to create game. You need at least 1 STX plus transaction fees.");
+        } else if (errorMsg.includes('undefined')) {
+            alert("Wallet connection issue. Please:\n1. Refresh the page\n2. Reconnect your wallet\n3. Make sure you have STX in your wallet\n4. Try again");
+        } else {
+            alert(`Failed to create game: ${errorMsg}\n\nTry refreshing the page and reconnecting wallets.`);
+        }
+    }
+}
+
+// Join game and stake STX
+async function joinGame() {
+    if (!stxAddress2 || !currentGameId) {
+        alert("Need Player 2 wallet and valid game ID!");
+        return;
+    }
+    
+    updateGameStatus("Joining game and staking 1 STX...");
+    debugLog("Starting game join...");
+    
+    try {
+        // Import Stacks transactions library functions (if available)
+        let clarityValueHex;
+        if (typeof window.StacksTransactions !== 'undefined') {
+            // Use proper Clarity value encoding if library is available
+            const { uintCV, cvToHex } = window.StacksTransactions;
+            clarityValueHex = cvToHex(uintCV(currentGameId));
+        } else {
+            // Fallback to simple string (may not work with all wallets)
+            clarityValueHex = `u${currentGameId}`;
+        }
+
+        const txOptions = {
+            contract: `${CONTRACT_ADDRESS}.${CONTRACT_NAME}`, // Correct format
+            functionName: "join-game",
+            functionArgs: [clarityValueHex], // Properly encoded arguments
+            postConditions: [],
+            postConditionMode: "allow"
+        };
+
+        debugLog("Transaction options: " + JSON.stringify(txOptions));
+
+        let result;
+        
+        // Try different wallet APIs
+        if (typeof window.StacksProvider !== 'undefined') {
+            // Hiro/Leather wallet
+            result = await window.StacksProvider.request('stx_callContract', txOptions);
+        } else if (typeof window.satsConnect !== 'undefined') {
+            // Xverse wallet (newer API)
+            result = await window.satsConnect.request('stx_callContract', txOptions);
+        } else {
+            // Fallback to generic provider
+            const provider = getWalletProvider();
+            result = await provider.request('stx_callContract', txOptions);
+        }
+
+        debugLog("Transaction result: " + JSON.stringify(result));
+        
+        if (result && (result.result?.txid || result.result?.txId || result.txId)) {
+            const txId = result.result?.txid || result.result?.txId || result.txId;
+            updateGameStatus(`Game joined! TX: ${txId.slice(0, 8)}... Ready to play!`);
+            joinGameBtn.disabled = true;
+            joinGameBtn.textContent = "✅ Game Joined";
+            
+            // Enable game buttons
+            btnDeal.disabled = false;
+            btnHit.disabled = false;
+            btnStand.disabled = false;
+            
+            // Add highlight effect
+            document.querySelector('.game-controls').classList.add('highlight');
+            
+            alert(`Joined game successfully!\nTransaction ID: ${txId}\n\nBoth players have staked 1 STX each.\nYou can now start playing blackjack!`);
+        } else {
+            throw new Error("Transaction failed - no txId returned");
+        }
+        
+    } catch (error) {
+        debugLog("Join game error: " + (error.message || error));
+        console.error("Failed to join game:", error);
+        updateGameStatus("Failed to join game. Check debug info for details.");
+        
+        // Handle specific error types
+        if (error.message && error.message.includes('User rejected')) {
+            alert("Transaction cancelled by user");
+        } else if (error.message && error.message.includes('Insufficient funds')) {
+            alert("Insufficient STX balance to join game");
+        } else {
+            alert(`Failed to join game: ${error.message || 'Unknown error - check console for details'}`);
+        }
+    }
+}
+
+// Payout winner
+async function payoutWinner(winnerAddress) {
+    if (!currentGameId) {
+        alert("No active game to payout!");
+        return;
+    }
+    
+    updateGameStatus("Paying out winner...");
+    debugLog("Starting winner payout...");
+    
+    try {
+        const provider = getWalletProvider();
+        if (!provider) {
+            throw new Error("No wallet provider available");
+        }
+
+        const txOptions = {
+            contractAddress: CONTRACT_ADDRESS,
+            contractName: CONTRACT_NAME,
+            functionName: "payout-winner",
+            functionArgs: [`u${currentGameId}`, `${winnerAddress}`], // Fixed: use backticks for template literals
+            network: NETWORK,
+            anchorMode: 'any'
+        };
+
+        debugLog("Transaction options: " + JSON.stringify(txOptions));
+
+        const result = await provider.request('stx_callContract', txOptions);
+        debugLog("Transaction result: " + JSON.stringify(result));
+        
+        if (result && result.txId) {
+            updateGameStatus(`Winner paid! TX: ${result.txId.slice(0, 8)}...`);
+            alert(`Winner has been paid 2 STX!\nTransaction ID: ${result.txId}`);
+        } else {
+            throw new Error("Transaction failed - no txId returned");
+        }
+        
+    } catch (error) {
+        debugLog("Payout error: " + error.message);
+        console.error("Failed to payout winner:", error);
+        updateGameStatus("Failed to payout winner. Check debug info for details.");
+        alert(`Failed to payout winner: ${error.message || error}`);
+    }
+}
+
+// Refund in case of tie
+async function refundTie() {
+    if (!currentGameId) {
+        alert("No active game to refund!");
+        return;
+    }
+    
+    updateGameStatus("Processing tie refund...");
+    debugLog("Starting tie refund...");
+    
+    try {
+        const provider = getWalletProvider();
+        if (!provider) {
+            throw new Error("No wallet provider available");
+        }
+
+        const txOptions = {
+            contractAddress: CONTRACT_ADDRESS,
+            contractName: CONTRACT_NAME,
+            functionName: "refund-tie",
+            functionArgs: [`u${currentGameId}`], // Fixed: use backticks for template literal
+            network: NETWORK,
+            anchorMode: 'any'
+        };
+
+        debugLog("Transaction options: " + JSON.stringify(txOptions));
+
+        const result = await provider.request('stx_callContract', txOptions);
+        debugLog("Transaction result: " + JSON.stringify(result));
+        
+        if (result && result.txId) {
+            updateGameStatus(`Tie refunded! TX: ${result.txId.slice(0, 8)}...`);
+            alert(`Both players refunded 1 STX each!\nTransaction ID: ${result.txId}`);
+        } else {
+            throw new Error("Transaction failed - no txId returned");
+        }
+        
+    } catch (error) {
+        debugLog("Refund error: " + error.message);
+        console.error("Failed to refund tie:", error);
+        updateGameStatus("Failed to refund tie. Check debug info for details.");
+        alert(`Failed to refund tie: ${error.message || error}`);
+    }
+}
+
+// -------------------- BLACKJACK GAME LOGIC -------------------- //
+
+// Build a mini deck of 20 cards with values between 2-11
+function buildDeck() {
+    const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11]; // Blackjack values
+    let d = [];
+    while (d.length < deckSize) {
+        const rand = values[Math.floor(Math.random() * values.length)];
+        d.push(rand);
+    }
+    return shuffle(d);
+}
+
+// Fisher-Yates shuffle
+function shuffle(array) {
+    let m = array.length, t, i;
+    while (m) {
+        i = Math.floor(Math.random() * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+    }
+    return array;
+}
+
+function showScores() {
+    debugLog(`Player 1: ${scores[0]} (Total: ${calcScore(scores[0])})`);
+    debugLog(`Player 2: ${scores[1]} (Total: ${calcScore(scores[1])})`);
+}
+
+// Calculate total score for a player (handle Aces properly)
+function calcScore(cards) {
+    let total = cards.reduce((a, b) => a + b, 0);
+    let aces = cards.filter(card => card === 11).length;
+    
+    // Convert Aces from 11 to 1 if total > 21
+    while (total > 21 && aces > 0) {
+        total -= 10;
+        aces--;
+    }
+    
+    return total;
+}
+
+// Update UI scores
+function updateUI() {
+    scoreEl0.textContent = calcScore(scores[0]);
+    scoreEl1.textContent = calcScore(scores[1]);
+    btnLimit.textContent = `📊 Cards left: ${deck.length}`;
+    
+    // Show current player
+    const currentPlayerName = currentPlayer === 0 ? "Player 1" : "Player 2";
+    updateGameStatus(`Game in progress - ${currentPlayerName}'s turn`);
+    
+    // Highlight current player
+    document.querySelectorAll('.player-section').forEach((section, index) => {
+        if (index === currentPlayer) {
+            section.style.borderColor = '#ffd700';
+            section.style.borderWidth = '3px';
+        } else {
+            section.style.borderColor = 'rgba(255,255,255,0.2)';
+            section.style.borderWidth = '1px';
+        }
+    });
+}
+
+// Switch to next player
+function switchPlayer() {
+    currentPlayer = currentPlayer === 0 ? 1 : 0;
+    if (hasStood[currentPlayer]) {
+        if (hasStood.every(Boolean)) {
+            endGame();
+        } else {
+            switchPlayer();
+        }
+    } else {
+        updateUI();
+    }
+}
+
+// End game: determine winner and handle blockchain payout
+function endGame() {
+    gameOver = true;
+    showScores();
+    const total0 = calcScore(scores[0]);
+    const total1 = calcScore(scores[1]);
+
+    let result;
+    let winnerAddress = null;
+    
+    debugLog(`\n=== GAME OVER ===`);
+    debugLog(`Player 1 final score: ${total0}`);
+    debugLog(`Player 2 final score: ${total1}`);
+    
+    // Reset player highlighting
+    document.querySelectorAll('.player-section').forEach(section => {
+        section.style.borderColor = 'rgba(255,255,255,0.2)';
+        section.style.borderWidth = '1px';
+    });
+    
+    if (total0 > 21 && total1 > 21) {
+        result = "🤝 Both players busted! It's a tie - refunding stakes.";
+        updateGameStatus("Game Over: Both players busted - Processing refund...");
+        refundTie();
+    } else if (total0 > 21) {
+        result = "🎉 Player 2 wins! (Player 1 busted)";
+        winnerAddress = stxAddress2;
+        updateGameStatus("Game Over: Player 2 wins - Processing payout...");
+    } else if (total1 > 21) {
+        result = "🎉 Player 1 wins! (Player 2 busted)";
+        winnerAddress = stxAddress1;
+        updateGameStatus("Game Over: Player 1 wins - Processing payout...");
+    } else if (total0 === total1) {
+        result = "🤝 It's a tie! Refunding stakes.";
+        updateGameStatus("Game Over: Tie game - Processing refund...");
+        refundTie();
+    } else if (total0 > total1) {
+        result = "🎉 Player 1 wins!";
+        winnerAddress = stxAddress1;
+        updateGameStatus("Game Over: Player 1 wins - Processing payout...");
+    } else {
+        result = "🎉 Player 2 wins!";
+        winnerAddress = stxAddress2;
+        updateGameStatus("Game Over: Player 2 wins - Processing payout...");
+    }
+
+    debugLog(result);
+    alert(result);
+    
+    // Payout winner if there is one
+    if (winnerAddress) {
+        setTimeout(() => payoutWinner(winnerAddress), 1000); // Small delay for better UX
+    }
+    
+    // Disable game buttons
+    btnHit.disabled = true;
+    btnStand.disabled = true;
+    btnDeal.disabled = true;
+}
+
+// Start/restart game
+function startGame() {
+    if (!stxAddress1 || !stxAddress2) {
+        alert("Both players must connect wallets and stake STX first!");
+        return;
+    }
+    
+    if (!currentGameId) {
+        alert("Please create and join a game first!");
+        return;
+    }
+    
+    // Reset game state
+    deck = buildDeck();
+    scores = [[], []];
+    hasStood = [false, false];
+    currentPlayer = 0;
+    gameOver = false;
+    
+    // Deal initial cards
+    scores[0].push(deck.pop(), deck.pop()); // Player 1 gets 2 cards
+    scores[1].push(deck.pop(), deck.pop()); // Player 2 gets 2 cards
+    
+    updateUI();
+    
+    debugLog("New game started!");
+    debugLog(`Player 1 starts with: ${scores[0]} (Total: ${calcScore(scores[0])})`);
+    debugLog(`Player 2 starts with: ${scores[1]} (Total: ${calcScore(scores[1])})`);
+    
+    updateGameStatus("Game started! Player 1's turn - Hit or Stand?");
+    
+    // Remove highlight from controls
+    document.querySelector('.game-controls').classList.remove('highlight');
+}
+
+// Deal one card to current player
+function hit() {
+    if (gameOver || deck.length === 0) return;
+    if (hasStood[currentPlayer]) return;
+    
+    const card = deck.pop();
+    scores[currentPlayer].push(card);
+    
+    const newScore = calcScore(scores[currentPlayer]);
+    debugLog(`Player ${currentPlayer + 1} drew ${card}, total: ${newScore}`);
+    
+    updateUI();
+    
+    // Check if player busted
+    if (newScore > 21) {
+        debugLog(`Player ${currentPlayer + 1} busted!`);
+        hasStood[currentPlayer] = true;
+    }
+    
+    if (hasStood.every(Boolean) || deck.length === 0) {
+        endGame();
+        return;
+    }
+    
+    switchPlayer();
+}
+
+// Player stands
+function stand() {
+    if (gameOver) return;
+    
+    debugLog(`Player ${currentPlayer + 1} stands with ${calcScore(scores[currentPlayer])}`);
+    hasStood[currentPlayer] = true;
+    
+    if (hasStood.every(Boolean) || deck.length === 0) {
+        endGame();
+        return;
+    }
+    
+    switchPlayer();
+}
+
+// -------------------- EVENT LISTENERS -------------------- //
+connectWallet1Btn.addEventListener("click", connectWallet1);
+connectWallet2Btn.addEventListener("click", connectWallet2);
+createGameBtn.addEventListener("click", createGame);
+joinGameBtn.addEventListener("click", joinGame);
+
+btnHit.addEventListener("click", hit);
+btnStand.addEventListener("click", stand);
+btnDeal.addEventListener("click", startGame);
+btnLimit.addEventListener("click", updateUI);
+
+// Initialize - disable game buttons until wallets connected and game created
+btnDeal.disabled = true;
+btnHit.disabled = true;
+btnStand.disabled = true;
+
+// Initialize debug info
+debugLog("🃏 Stacks Blackjack game loaded!");
+debugLog("Checking for available wallets...");
+
+// Check wallet availability on load
+if (checkWalletInstallation()) {
+    updateGameStatus("Wallets detected! Connect both players to start.");
+} else {
+    updateGameStatus("No Stacks wallets found. Please install Xverse, Leather, or Hiro wallet.");
+}
+
+console.log("🃏 Stacks Blackjack game loaded! Connect both wallets to start playing.");
+    </script>
+</body>
+</html>
