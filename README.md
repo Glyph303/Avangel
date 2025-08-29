@@ -6,100 +6,99 @@ This project combines classic casino-style Blackjack gameplay with Clarity smart
 
 📌 Features
 
-🎮 Two Players – Player 1 and Player 2 take turns.
+ 🎮 Two Players – Player 1 and Player 2 take turns.
 
-🂡 Deal Button – Starts the game by dealing initial cards.
+ 🂡 Deal Button – Starts the game by dealing initial cards.
 
-🃏 Hit Button – Draws another card for the current player.
+ 🃏 Hit Button – Draws another card for the current player.
 
-✋ Stand Button – Ends the current player's turn and switches to the next.
+ ✋ Stand Button – Ends the current player's turn and switches to the next.
 
-♠️ Cards Left Button – Shows how many cards remain in the deck.
+ ♠️ Cards Left Button – Shows how many cards remain in the deck.
 
-⭐ Active Player Highlight – Current player’s panel is visually highlighted.
+ ⭐ Active Player Highlight – Current player’s panel is visually highlighted.
 
-🏆 Winner Detection – Declares a winner when a player reaches Blackjack (21) or busts.
+ 🏆 Winner Detection – Declares a winner when a player reaches Blackjack (21) or busts.
 
-🔗 Blockchain Integration – Game outcomes are recorded via Clarity smart contracts.
+ 🔗 Blockchain Integration – Game outcomes are recorded via Clarity smart contracts.
 
-👛 Wallet Support – Players connect with Leather Wallet for transactions.
+ 👛 Wallet Support – Players connect with Leather Wallet for transactions.
 
 
 🚀 How to Run
 
-Clone or download the project.
+-Clone or download the project.
 
-Open index.html in your browser.
+-Open index.html in your browser.
 
-Connect your Leather Wallet when prompted.
+-Connect your Leather Wallet when prompted.
 
-Use the buttons (Deal, Hit, Stand, Cards Left) to play the game.
+-Use the buttons (Deal, Hit, Stand, Cards Left) to play the game.
 
-Game results are executed through the Clarity contract on the Stacks testnet.
+-Game results are executed through the Clarity contract on the Stacks testnet.
 
 🎨 Styling
 
-The game uses a casino-inspired theme with:
+-The game uses a casino-inspired theme with:
 
-Gradient background
+-Gradient background
 
-Highlighted active player section
+-Highlighted active player section
 
-Rounded, interactive buttons
+-Rounded, interactive buttons
 
-Clear typography and scoreboard
+-Clear typography and scoreboard
 
-Themes can be customized in style.css (e.g., classic green felt, sleek black & red, or gold & navy).
+-Themes can be customized in style.css (e.g., classic green felt, sleek black & red, or gold & navy).
 
 🛠️ Tech Stack
 
-Frontend: HTML5, CSS3, JavaScript (ES6)
+-Frontend: HTML5, CSS3, JavaScript (ES6)
 
-Blockchain: Stacks blockchain (smart contracts with Clarity)
+-Blockchain: Stacks blockchain (smart contracts with Clarity)
 
-Wallet: Leather Wallet (for authentication & transactions)
+-Wallet: Leather Wallet (for authentication & transactions)
 
-Smart Contract Language: Clarity
+-Smart Contract Language: Clarity
 
 📖 Rules of Blackjack (Simplified)
 
-Each player starts with two cards.
+-Each player starts with two cards.
 
-The goal is to get as close to 21 as possible without going over.
+-The goal is to get as close to 21 as possible without going over.
 
-Hit → Draw another card.
+-Hit → Draw another card.
 
-Stand → End your turn.
+-Stand → End your turn.
 
-If you go over 21, you bust and lose.
+-If you go over 21, you bust and lose.
 
-The player closest to 21 wins.
+-The player closest to 21 wins.
 
-On Stacks, the final result is committed to the blockchain for fairness and transparency.
+-On Stacks, the final result is committed to the blockchain for fairness and transparency.
 
 🔗 Blockchain Integration
 
-The game logic runs in JavaScript (frontend) but critical state transitions (wins, busts, balances) are secured via a Clarity smart contract.
+-The game logic runs in JavaScript (frontend) but critical state transitions (wins, busts, balances) are secured via a Clarity smart contract.
 
-Stacks blockchain ensures transparency and prevents cheating.
+-Stacks blockchain ensures transparency and prevents cheating.
 
-Leather Wallet is used for:
+-Leather Wallet is used for:
 
-Player authentication
+-Player authentication
 
-Transaction signing
+-Transaction signing
 
-Handling wagers (if added later)
 
 💡 Future Improvements
 
-Add card graphics instead of just numbers.
+-Add card graphics instead of just numbers.
 
-Implement betting system with STX tokens.
+-Implement betting system with STX tokens.
 
-Add multiplayer over the network.
+-Add multiplayer over the network.
 
-Add animations for card dealing and blockchain confirmations.
+-Add animations for card dealing and blockchain confirmations.
 
 📜 License
 
