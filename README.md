@@ -101,8 +101,5 @@ This project combines classic casino-style Blackjack gameplay with Clarity smart
 
 This project is for educational and hackathon purposes.
 Feel free to fork, use, and improve!
-PULL BEFORE COMMIT
-CHANGES MADE
-UPDATE THIS EVERY TIME YOU DO IT
 
 
