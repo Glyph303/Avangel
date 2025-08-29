@@ -28,14 +28,11 @@ This project combines classic casino-style Blackjack gameplay with Clarity smart
 🚀 How to Run
 
 -Clone or download the project.
-
 -Open index.html in your browser.
-
 -Connect your Leather Wallet when prompted.
-
 -Use the buttons (Deal, Hit, Stand, Cards Left) to play the game.
-
 -Game results are executed through the Clarity contract on the Stacks testnet.
+
 
 🎨 Styling
 
