@@ -1,78 +1,57 @@
 
-🎲 Blackjack Game on Stacks
+ Blackjack Game on Stacks
 
-A decentralized 2-player Blackjack game built with HTML, CSS, JavaScript, and powered by the Stacks blockchain.
-This project combines classic casino-style Blackjack gameplay with Clarity smart contracts and Leather Wallet integration for secure blockchain-based play.
+A decentralized Blackjack game built using Clarity smart contracts on the Stacks blockchain, with seamless integration of the Leather wallet for player authentication and transaction signing.
 
-📌 Features
+🚀 Project Title & Description
 
- 🎮 Two Players – Player 1 and Player 2 take turns.
+Blackjack on Stacks is a blockchain-based card game where players can play Blackjack in a trustless and verifiable way. The smart contract ensures fair gameplay, transparent scoring, and decentralized betting logic.
 
- 🂡 Deal Button – Starts the game by dealing initial cards.
+🛠️ Tech Stack Used
 
- 🃏 Hit Button – Draws another card for the current player.
+-Frontend: HTML, CSS, JavaScript
 
- ✋ Stand Button – Ends the current player's turn and switches to the next.
+-Smart Contracts: Clarity
+ (Stacks)
 
- ♠️ Cards Left Button – Shows how many cards remain in the deck.
+-Wallet Integration: Leather Wallet
 
- ⭐ Active Player Highlight – Current player’s panel is visually highlighted.
+-Blockchain: Stacks Testnet
 
- 🏆 Winner Detection – Declares a winner when a player reaches Blackjack (21) or busts.
-
- 🔗 Blockchain Integration – Game outcomes are recorded via Clarity smart contracts.
-
- 👛 Wallet Support – Players connect with Leather Wallet for transactions.
+-Build Tools: Stacks CLI, Clarinet (for local dev & testing)
 
 
-🚀 How to Run
 
--Clone or download the project.
--Open index.html in your browser.
--Connect your Leather Wallet when prompted.
--Use the buttons (Deal, Hit, Stand, Cards Left) to play the game.
--Game results are executed through the Clarity contract on the Stacks testnet.
+⚙️ Setup Instructions
+  Vercel Link - http://avangelion.vercel.app
+
+📜 Smart Contract Address
+Deployed on Testnet: ST3X605747TEH8T51D6VXAFV4PVKW5HZSJKN63556.blackjack
 
 
-🎨 Styling
 
--The game uses a casino-inspired theme with:
+🎮 How to Use the Project
 
--Gradient background
+-Connect your Leather Wallet.
 
--Highlighted active player section
+-Select Player 1 or Player 2.
 
--Rounded, interactive buttons
+-Click Start Play to begin.
 
--Clear typography and scoreboard
+-Use the Deal, Hit, and Stand buttons to play.
 
--Themes can be customized in style.css (e.g., classic green felt, sleek black & red, or gold & navy).
+-The smart contract ensures fair rules and updates scores transparently.
 
-🛠️ Tech Stack
+👥 Team Members
 
--Frontend: HTML5, CSS3, JavaScript (ES6)
+- Aditi Shikha
+- Aryan Garg
+- Vishruth Tiwari
 
--Blockchain: Stacks blockchain (smart contracts with Clarity)
-
--Wallet: Leather Wallet (for authentication & transactions)
-
--Smart Contract Language: Clarity
-
-📖 Rules of Blackjack (Simplified)
-
--Each player starts with two cards.
-
--The goal is to get as close to 21 as possible without going over.
-
--Hit → Draw another card.
-
--Stand → End your turn.
-
--If you go over 21, you bust and lose.
-
--The player closest to 21 wins.
-
--On Stacks, the final result is committed to the blockchain for fairness and transparency.
+📸 Screenshots / Demo
+   Video Link - https://drive.google.com/file/d/1TKPMg2kQGBSZxZqVt8lrK0q-3iv3obSv/view?usp=sharing
+  
+ 
 
 🔗 Blockchain Integration
 
@@ -85,17 +64,6 @@ This project combines classic casino-style Blackjack gameplay with Clarity smart
 -Player authentication
 
 -Transaction signing
-
-
-💡 Future Improvements
-
--Add card graphics instead of just numbers.
-
--Implement betting system with STX tokens.
-
--Add multiplayer over the network.
-
--Add animations for card dealing and blockchain confirmations.
 
 📜 License
 
