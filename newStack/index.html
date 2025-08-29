@@ -328,8 +328,8 @@ let currentGameId = null;
 // Stacks connection - UPDATE THIS WITH YOUR DEPLOYED CONTRACT ADDRESS
 let stxAddress1 = null;
 let stxAddress2 = null;
-const CONTRACT_ADDRESS = "ST35D0W583GEAV1T1PDVF5R3SYXVC3KC1FJZPQSVG"; // Your deployer address
-const CONTRACT_NAME = "bj_escrow_v2";
+const CONTRACT_ADDRESS = "ST3X605747TEH8T51D6VXAFV4PVKW5HZSJKN63556"; // Your deployer address
+const CONTRACT_NAME = "blackjack";
 const NETWORK = "testnet";
 
 // DOM elements
@@ -551,6 +551,7 @@ function checkBothWalletsConnected() {
         createGameBtn.disabled = false;
         joinGameBtn.disabled = false;
         updateGameStatus("Both wallets connected! Ready to create/join game.");
+        console.log("Both players connected:", stxAddress1, stxAddress2);
     }
 }
 
